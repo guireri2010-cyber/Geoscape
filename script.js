@@ -2,7 +2,7 @@ let playerName = "";
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
-
+ 
 // 10 preguntas (Junior Cycle real)
 let questions = [
   {
