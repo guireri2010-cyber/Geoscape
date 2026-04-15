@@ -11,21 +11,9 @@ button {
   cursor: pointer;
 }
 
-#game-area {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin: 20px;
-  align-items: flex-end;
-}
-
-.pipe {
-  font-size: 40px;
-  cursor: pointer;
-}
-
-#player {
-  position: relative;
-  font-size: 30px;
-  left: 0px;
+#doors button {
+  font-size: 18px;
+  display: block;
+  margin: 10px auto;
+  width: 250px;
 }
