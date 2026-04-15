@@ -1,15 +1,18 @@
 body {
   font-family: Arial;
   text-align: center;
-  background-color: #f0f8ff;
+  background-color: #e6f7ff;
 }
 
 button {
   margin: 10px;
   padding: 10px;
   cursor: pointer;
+  font-size: 16px;
 }
 
-#quiz-screen, #result-screen {
-  margin-top: 50px;
+.pipes button {
+  background-color: green;
+  color: white;
+  font-size: 18px;
 }
