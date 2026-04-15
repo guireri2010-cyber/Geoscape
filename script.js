@@ -2,111 +2,81 @@ let playerName = "";
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
- 
 let playerPosition = 0;
 
-// 10 preguntas TOTAL
-// 7 normales + 3 juegos
-
+// 10 preguntas JUNIOR CYCLE
 let questions = [
- let questions = [
-  // 1
   {
     type: "normal",
     question: "What is the capital of France?",
     options: ["Paris", "Madrid", "Berlin"],
     answer: 0
   },
-
-  // 2
   {
     type: "normal",
-    question: "Which continent is Brazil located in?",
-    options: ["Africa", "South America", "Europe"],
+    question: "Which continent is Brazil in?",
+    options: ["Europe", "South America", "Asia"],
     answer: 1
   },
-
-  // 3
+  {
+    type: "mario",
+    question: "Go to the pipe of Japan",
+    answer: 1
+  },
   {
     type: "normal",
-    question: "What is the largest ocean on Earth?",
-    options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean"],
+    question: "What is the largest ocean?",
+    options: ["Atlantic", "Indian", "Pacific"],
     answer: 2
   },
-
-  // 4 (ARCade style but real)
-  {
-    type: "arcade",
-    question: "Which of these is a European capital city?",
-    options: ["Madrid", "Cairo", "Tokyo"],
-    answer: 0
-  },
-
-  // 5
   {
     type: "normal",
     question: "What is the capital of Japan?",
-    options: ["Beijing", "Seoul", "Tokyo"],
+    options: ["Seoul", "Beijing", "Tokyo"],
     answer: 2
   },
-
-  // 6
+  {
+    type: "mario",
+    question: "Go to the pipe of Spain",
+    answer: 2
+  },
   {
     type: "normal",
-    question: "Which country has the pyramids of Giza?",
-    options: ["Mexico", "Egypt", "India"],
-    answer: 1
-  },
-
-  // 7 (ARCade style)
-  {
-    type: "arcade",
-    question: "Which of these is a physical feature?",
-    options: ["River", "Government", "Population"],
+    question: "Which country has the pyramids?",
+    options: ["Egypt", "India", "Mexico"],
     answer: 0
   },
-
-  // 8
   {
     type: "normal",
-    question: "What is the longest river in the world?",
-    options: ["Amazon River", "Nile River", "Danube River"],
+    question: "What is climate?",
+    options: ["Daily weather", "Long-term weather patterns", "Earth rotation"],
     answer: 1
   },
-
-  // 9 (ARCade style)
   {
-    type: "arcade",
-    question: "Which country is part of South America?",
-    options: ["Brazil", "Spain", "France"],
+    type: "mario",
+    question: "Go to the pipe of Brazil",
     answer: 0
   },
-
-  // 10
   {
-    type: "normal",
-    question: "What does climate refer to?",
-    options: [
-      "Daily weather changes",
-      "Long-term weather patterns",
-      "Earth’s rotation"
-    ],
-    answer: 1
+    type: "food",
+    question: "🍽️ Final Boss: What is a traditional Spanish food?",
+    options: ["🥘 Paella", "🍔 Burger", "🍣 Sushi"],
+    answer: 0
   }
 ];
 
-// Mezclar preguntas
 questions.sort(() => Math.random() - 0.5);
 
+// START
 function startGame() {
-  let nameInput = document.getElementById("name").value;
+  let name = document.getElementById("name").value;
 
-  if (nameInput === "") {
+  if (name === "") {
     alert("Enter your name!");
     return;
   }
 
-  playerName = nameInput;
+  playerName = name;
 
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
@@ -115,21 +85,22 @@ function startGame() {
   startTimer();
 }
 
+// SHOW QUESTION
 function showQuestion() {
   let q = questions[currentQuestion];
 
   document.getElementById("question").innerText = q.question;
-
   document.getElementById("answers").innerHTML = "";
-  document.getElementById("mario-game").style.display = "none";
-  document.getElementById("arcade-game").style.display = "none";
+
+  document.getElementById("game-area").style.display = "none";
+  document.getElementById("food-game").style.display = "none";
 
   // NORMAL
   if (q.type === "normal") {
-    q.options.forEach((option, index) => {
+    q.options.forEach((opt, i) => {
       let btn = document.createElement("button");
-      btn.innerText = option;
-      btn.onclick = () => checkAnswer(index);
+      btn.innerText = opt;
+      btn.onclick = () => checkAnswer(i);
       document.getElementById("answers").appendChild(btn);
     });
   }
@@ -138,34 +109,36 @@ function showQuestion() {
   if (q.type === "mario") {
     playerPosition = 0;
     updatePlayer();
-    document.getElementById("mario-game").style.display = "block";
+    document.getElementById("game-area").style.display = "block";
   }
 
-  // ARCADE
-  if (q.type === "arcade") {
-    let arcade = document.getElementById("arcade-game");
-    arcade.innerHTML = "<p>Click the correct answer!</p>";
+  // FOOD (FINAL LEVEL)
+  if (q.type === "food") {
+    let game = document.getElementById("food-game");
+
+    game.innerHTML = `
+      <h3>🍄🧍 ${q.question}</h3>
+      <p>Choose what the character eats:</p>
+    `;
 
     q.options.forEach((opt, i) => {
       let btn = document.createElement("button");
-      btn.innerText = opt;
-      btn.onclick = () => checkArcade(i);
-      arcade.appendChild(btn);
+      btn.innerText = opt + " 🍴";
+      btn.onclick = () => checkFood(i);
+      game.appendChild(btn);
     });
 
-    arcade.style.display = "block";
+    game.style.display = "block";
   }
 }
 
-// NORMAL
-function checkAnswer(selected) {
-  if (selected === questions[currentQuestion].answer) {
-    score++;
-  }
-  nextQuestion();
+// NORMAL ANSWER
+function checkAnswer(i) {
+  if (i === questions[currentQuestion].answer) score++;
+  next();
 }
 
-// MARIO
+// MARIO MOVEMENT
 function moveLeft() {
   if (playerPosition > 0) playerPosition--;
   updatePlayer();
@@ -181,29 +154,32 @@ function updatePlayer() {
   document.getElementById("player").style.left = pos[playerPosition] + "px";
 }
 
-function choosePipe(pipe) {
-  if (pipe === questions[currentQuestion].answer && pipe === playerPosition) {
+function choosePipe(i) {
+  if (i === questions[currentQuestion].answer && i === playerPosition) {
     score++;
   }
-  nextQuestion();
+  next();
 }
 
-// ARCADE
-function checkArcade(selected) {
-  if (selected === questions[currentQuestion].answer) {
+// FOOD GAME
+function checkFood(i) {
+  if (i === questions[currentQuestion].answer) {
     score++;
+    alert("🍽️ Correct! Delicious!");
+  } else {
+    alert("❌ Not typical Spanish food!");
   }
-  nextQuestion();
+  next();
 }
 
 // NEXT
-function nextQuestion() {
+function next() {
   currentQuestion++;
 
   if (currentQuestion < questions.length) {
     showQuestion();
   } else {
-    showResults();
+    showResult();
   }
 }
 
@@ -215,25 +191,24 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      showResults();
+      showResult();
     }
   }, 1000);
 }
 
 // RESULT
-function showResults() {
+function showResult() {
   let total = questions.length;
-  let percentage = Math.round((score / total) * 100);
+  let percent = Math.round((score / total) * 100);
 
-  let message = "";
-
-  if (percentage >= 80) message = "🌟 Excellent!";
-  else if (percentage >= 50) message = "👍 Good job!";
-  else message = "📚 Keep practicing!";
+  let msg = "";
+  if (percent >= 80) msg = "🌟 Excellent!";
+  else if (percent >= 50) msg = "👍 Good!";
+  else msg = "📚 Keep studying!";
 
   document.getElementById("quiz-screen").style.display = "none";
   document.getElementById("result-screen").style.display = "block";
 
   document.getElementById("result").innerText =
-    `${playerName} scored ${score}/${total} (${percentage}%)\n${message}`;
+    `${playerName} scored ${score}/${total} (${percent}%)\n${msg}`;
 }
