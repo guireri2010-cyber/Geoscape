@@ -4,7 +4,7 @@
   <title>GeoEscape</title>
   <link rel="stylesheet" href="style.css">
 </head>
- 
+
 <body>
 
 <div id="start-screen">
@@ -15,31 +15,31 @@
 </div>
 
 <div id="quiz-screen" style="display:none;">
+
   <p>⏱ Time: <span id="timer">180</span></p>
+
   <h2 id="question"></h2>
 
   <div id="answers"></div>
 
   <!-- MARIO GAME -->
   <div id="mario-game" style="display:none;">
-    <p>Use buttons to reach the correct pipe!</p>
+    <p>🟩 Move to the correct pipe</p>
+
     <div id="game-area">
       <div id="player">🧍</div>
-      <div class="pipe" onclick="checkMario(0)">🟩</div>
-      <div class="pipe" onclick="checkMario(1)">🟩</div>
-      <div class="pipe" onclick="checkMario(2)">🟩</div>
+
+      <div class="pipe" onclick="choosePipe(0)">🟩</div>
+      <div class="pipe" onclick="choosePipe(1)">🟩</div>
+      <div class="pipe" onclick="choosePipe(2)">🟩</div>
     </div>
+
     <button onclick="moveLeft()">⬅️</button>
     <button onclick="moveRight()">➡️</button>
   </div>
 
   <!-- ARCADE GAME -->
-  <div id="arcade-game" style="display:none;">
-    <p>Click the correct answer FAST!</p>
-    <button onclick="checkArcade(0)">Europe</button>
-    <button onclick="checkArcade(1)">Africa</button>
-    <button onclick="checkArcade(2)">Asia</button>
-  </div>
+  <div id="arcade-game" style="display:none;"></div>
 
 </div>
 
