@@ -2,9 +2,8 @@ let playerName = "";
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
-let playerPosition = 0;
 
-// 10 preguntas JUNIOR CYCLE
+// 10 preguntas (Junior Cycle real)
 let questions = [
   {
     type: "normal",
@@ -19,8 +18,8 @@ let questions = [
     answer: 1
   },
   {
-    type: "mario",
-    question: "Go to the pipe of Japan",
+    type: "door",
+    question: "Which country is Paris the capital of?",
     answer: 1
   },
   {
@@ -36,9 +35,9 @@ let questions = [
     answer: 2
   },
   {
-    type: "mario",
-    question: "Go to the pipe of Spain",
-    answer: 2
+    type: "door",
+    question: "Which country is Madrid the capital of?",
+    answer: 0
   },
   {
     type: "normal",
@@ -49,17 +48,17 @@ let questions = [
   {
     type: "normal",
     question: "What is climate?",
-    options: ["Daily weather", "Long-term weather patterns", "Earth rotation"],
+    options: ["Daily weather", "Long-term patterns", "Earth rotation"],
     answer: 1
   },
   {
-    type: "mario",
-    question: "Go to the pipe of Brazil",
-    answer: 0
+    type: "door",
+    question: "Which country is Tokyo the capital of?",
+    answer: 2
   },
   {
     type: "food",
-    question: "🍽️ Final Boss: What is a traditional Spanish food?",
+    question: "🍽️ Final Level: What is a traditional Spanish food?",
     options: ["🥘 Paella", "🍔 Burger", "🍣 Sushi"],
     answer: 0
   }
@@ -92,7 +91,7 @@ function showQuestion() {
   document.getElementById("question").innerText = q.question;
   document.getElementById("answers").innerHTML = "";
 
-  document.getElementById("game-area").style.display = "none";
+  document.getElementById("door-game").style.display = "none";
   document.getElementById("food-game").style.display = "none";
 
   // NORMAL
@@ -100,30 +99,28 @@ function showQuestion() {
     q.options.forEach((opt, i) => {
       let btn = document.createElement("button");
       btn.innerText = opt;
-      btn.onclick = () => checkAnswer(i);
+      btn.onclick = () => checkNormal(i);
       document.getElementById("answers").appendChild(btn);
     });
   }
 
-  // MARIO
-  if (q.type === "mario") {
-    playerPosition = 0;
-    updatePlayer();
-    document.getElementById("game-area").style.display = "block";
+  // DOOR GAME (REPLACED MARIOS)
+  if (q.type === "door") {
+    document.getElementById("door-game").style.display = "block";
   }
 
-  // FOOD (FINAL LEVEL)
+  // FOOD GAME
   if (q.type === "food") {
     let game = document.getElementById("food-game");
 
     game.innerHTML = `
       <h3>🍄🧍 ${q.question}</h3>
-      <p>Choose what the character eats:</p>
+      <p>Choose the correct food:</p>
     `;
 
     q.options.forEach((opt, i) => {
       let btn = document.createElement("button");
-      btn.innerText = opt + " 🍴";
+      btn.innerText = opt;
       btn.onclick = () => checkFood(i);
       game.appendChild(btn);
     });
@@ -133,30 +130,18 @@ function showQuestion() {
 }
 
 // NORMAL ANSWER
-function checkAnswer(i) {
+function checkNormal(i) {
   if (i === questions[currentQuestion].answer) score++;
   next();
 }
 
-// MARIO MOVEMENT
-function moveLeft() {
-  if (playerPosition > 0) playerPosition--;
-  updatePlayer();
-}
-
-function moveRight() {
-  if (playerPosition < 2) playerPosition++;
-  updatePlayer();
-}
-
-function updatePlayer() {
-  let pos = [-80, 0, 80];
-  document.getElementById("player").style.left = pos[playerPosition] + "px";
-}
-
-function choosePipe(i) {
-  if (i === questions[currentQuestion].answer && i === playerPosition) {
+// DOOR GAME
+function chooseDoor(i) {
+  if (i === questions[currentQuestion].answer) {
     score++;
+    alert("Correct country! 🇪🇸🇫🇷🇯🇵");
+  } else {
+    alert("Wrong country!");
   }
   next();
 }
@@ -165,7 +150,7 @@ function choosePipe(i) {
 function checkFood(i) {
   if (i === questions[currentQuestion].answer) {
     score++;
-    alert("🍽️ Correct! Delicious!");
+    alert("🍽️ Correct!");
   } else {
     alert("❌ Not typical Spanish food!");
   }
