@@ -9,81 +9,89 @@ let playerPosition = 0;
 // 7 normales + 3 juegos
 
 let questions = [
-  // NORMAL 1
+ let questions = [
+  // 1
   {
     type: "normal",
     question: "What is the capital of France?",
-    options: ["Madrid", "Paris", "Rome"],
-    answer: 1
+    options: ["Paris", "Madrid", "Berlin"],
+    answer: 0
   },
 
-  // MARIO 1
-  {
-    type: "mario",
-    question: "Go to the pipe of Japan (Tokyo)",
-    answer: 1
-  },
-
-  // NORMAL 2
+  // 2
   {
     type: "normal",
-    question: "Which continent is Brazil in?",
-    options: ["Europe", "South America", "Asia"],
+    question: "Which continent is Brazil located in?",
+    options: ["Africa", "South America", "Europe"],
     answer: 1
   },
 
-  // NORMAL 3
+  // 3
   {
     type: "normal",
-    question: "Which ocean is the largest?",
-    options: ["Atlantic", "Indian", "Pacific"],
+    question: "What is the largest ocean on Earth?",
+    options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean"],
     answer: 2
   },
 
-  // ARCADE 1
+  // 4 (ARCade style but real)
   {
     type: "arcade",
-    question: "Which continent is Egypt in?",
-    options: ["Europe", "Africa", "Asia"],
-    answer: 1
+    question: "Which of these is a European capital city?",
+    options: ["Madrid", "Cairo", "Tokyo"],
+    answer: 0
   },
 
-  // NORMAL 4
+  // 5
   {
     type: "normal",
     question: "What is the capital of Japan?",
-    options: ["Seoul", "Beijing", "Tokyo"],
+    options: ["Beijing", "Seoul", "Tokyo"],
     answer: 2
   },
 
-  // MARIO 2
-  {
-    type: "mario",
-    question: "Go to the pipe of Spain",
-    answer: 2
-  },
-
-  // NORMAL 5
+  // 6
   {
     type: "normal",
-    question: "Which country has the pyramids?",
-    options: ["Egypt", "India", "Mexico"],
-    answer: 0
-  },
-
-  // ARCADE 2
-  {
-    type: "arcade",
-    question: "Which continent is Australia in?",
-    options: ["Europe", "Oceania", "Asia"],
+    question: "Which country has the pyramids of Giza?",
+    options: ["Mexico", "Egypt", "India"],
     answer: 1
   },
 
-  // MARIO 3
+  // 7 (ARCade style)
   {
-    type: "mario",
-    question: "Go to the pipe of Brazil",
+    type: "arcade",
+    question: "Which of these is a physical feature?",
+    options: ["River", "Government", "Population"],
     answer: 0
+  },
+
+  // 8
+  {
+    type: "normal",
+    question: "What is the longest river in the world?",
+    options: ["Amazon River", "Nile River", "Danube River"],
+    answer: 1
+  },
+
+  // 9 (ARCade style)
+  {
+    type: "arcade",
+    question: "Which country is part of South America?",
+    options: ["Brazil", "Spain", "France"],
+    answer: 0
+  },
+
+  // 10
+  {
+    type: "normal",
+    question: "What does climate refer to?",
+    options: [
+      "Daily weather changes",
+      "Long-term weather patterns",
+      "Earth’s rotation"
+    ],
+    answer: 1
   }
 ];
 
