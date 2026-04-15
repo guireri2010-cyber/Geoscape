@@ -22,16 +22,15 @@
 
   <div id="answers"></div>
 
-  <!-- GAME AREA -->
-  <div id="game-area" style="display:none;">
-    <div id="player">🧍</div>
+  <!-- DOOR GAME -->
+  <div id="door-game" style="display:none;">
+    <p>🚪 Choose the correct country</p>
 
-    <div class="pipe" onclick="choosePipe(0)">🟩</div>
-    <div class="pipe" onclick="choosePipe(1)">🟩</div>
-    <div class="pipe" onclick="choosePipe(2)">🟩</div>
-
-    <button onclick="moveLeft()">⬅️</button>
-    <button onclick="moveRight()">➡️</button>
+    <div id="doors">
+      <button onclick="chooseDoor(0)">🚪 🇪🇸 Spain</button>
+      <button onclick="chooseDoor(1)">🚪 🇫🇷 France</button>
+      <button onclick="chooseDoor(2)">🚪 🇯🇵 Japan</button>
+    </div>
   </div>
 
   <!-- FOOD GAME -->
