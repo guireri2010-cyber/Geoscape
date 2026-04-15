@@ -7,12 +7,24 @@ body {
 button {
   margin: 10px;
   padding: 10px;
-  cursor: pointer;
   font-size: 16px;
 }
 
-.pipes button {
-  background-color: green;
-  color: white;
-  font-size: 18px;
+#game-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 40px;
+  margin: 20px;
+}
+
+.pipe {
+  font-size: 40px;
+  cursor: pointer;
+}
+
+#player {
+  position: relative;
+  font-size: 30px;
+  left: 0px;
 }
