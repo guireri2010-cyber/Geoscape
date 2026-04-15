@@ -4,7 +4,7 @@
   <title>GeoEscape</title>
   <link rel="stylesheet" href="style.css">
 </head>
- 
+
 <body>
 
 <div id="start-screen">
@@ -22,24 +22,20 @@
 
   <div id="answers"></div>
 
-  <!-- MARIO GAME -->
-  <div id="mario-game" style="display:none;">
-    <p>🟩 Move to the correct pipe</p>
+  <!-- GAME AREA -->
+  <div id="game-area" style="display:none;">
+    <div id="player">🧍</div>
 
-    <div id="game-area">
-      <div id="player">🧍</div>
-
-      <div class="pipe" onclick="choosePipe(0)">🟩</div>
-      <div class="pipe" onclick="choosePipe(1)">🟩</div>
-      <div class="pipe" onclick="choosePipe(2)">🟩</div>
-    </div>
+    <div class="pipe" onclick="choosePipe(0)">🟩</div>
+    <div class="pipe" onclick="choosePipe(1)">🟩</div>
+    <div class="pipe" onclick="choosePipe(2)">🟩</div>
 
     <button onclick="moveLeft()">⬅️</button>
     <button onclick="moveRight()">➡️</button>
   </div>
 
-  <!-- ARCADE GAME -->
-  <div id="arcade-game" style="display:none;"></div>
+  <!-- FOOD GAME -->
+  <div id="food-game" style="display:none;"></div>
 
 </div>
 
