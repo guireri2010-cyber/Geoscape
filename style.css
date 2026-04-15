@@ -1,21 +1,22 @@
 body {
   font-family: Arial;
   text-align: center;
-  background-color: #e6f7ff;
+  background: #e6f7ff;
 }
- 
+
 button {
-  margin: 10px;
+  margin: 8px;
   padding: 10px;
   font-size: 16px;
+  cursor: pointer;
 }
 
 #game-area {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
   gap: 40px;
   margin: 20px;
+  align-items: flex-end;
 }
 
 .pipe {
