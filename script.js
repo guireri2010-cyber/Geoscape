@@ -3,7 +3,8 @@ let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
 
-// Preguntas (una es tipo juego)
+let playerPosition = 0;
+
 let questions = [
   {
     type: "normal",
@@ -12,15 +13,8 @@ let questions = [
     answer: 1
   },
   {
-    type: "normal",
-    question: "Which continent is Brazil in?",
-    options: ["Europe", "South America", "Asia"],
-    answer: 1
-  },
-  {
-    type: "game",
-    question: "Which pipe leads to Japan? (Tokyo)",
-    options: ["Spain", "Japan", "Italy"],
+    type: "mario",
+    question: "Go to the pipe of Japan (Tokyo)",
     answer: 1
   },
   {
@@ -30,17 +24,19 @@ let questions = [
     answer: 2
   },
   {
-    type: "normal",
-    question: "Which country has the pyramids?",
-    options: ["Egypt", "India", "Mexico"],
+    type: "mario",
+    question: "Go to the pipe of Brazil",
     answer: 0
+  },
+  {
+    type: "arcade",
+    question: "Which continent is Egypt in?",
+    answer: 1
   }
 ];
 
-// Mezclar preguntas
 questions.sort(() => Math.random() - 0.5);
 
-// Start
 function startGame() {
   let nameInput = document.getElementById("name").value;
 
@@ -58,52 +54,80 @@ function startGame() {
   startTimer();
 }
 
-// Mostrar pregunta
 function showQuestion() {
   let q = questions[currentQuestion];
 
   document.getElementById("question").innerText = q.question;
 
-  let answersDiv = document.getElementById("answers");
-  let gameArea = document.getElementById("game-area");
-
-  answersDiv.innerHTML = "";
-  gameArea.style.display = "none";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("mario-game").style.display = "none";
+  document.getElementById("arcade-game").style.display = "none";
 
   if (q.type === "normal") {
     q.options.forEach((option, index) => {
       let btn = document.createElement("button");
       btn.innerText = option;
       btn.onclick = () => checkAnswer(index);
-      answersDiv.appendChild(btn);
+      document.getElementById("answers").appendChild(btn);
     });
-  } else if (q.type === "game") {
-    gameArea.style.display = "block";
+  }
+
+  if (q.type === "mario") {
+    playerPosition = 0;
+    document.getElementById("player").style.left = "0px";
+    document.getElementById("mario-game").style.display = "block";
+  }
+
+  if (q.type === "arcade") {
+    document.getElementById("arcade-game").style.display = "block";
   }
 }
 
-// Respuesta normal
 function checkAnswer(selected) {
   if (selected === questions[currentQuestion].answer) {
     score++;
   }
-
   nextQuestion();
 }
 
-// Juego pipes
-function choosePipe(selected) {
-  if (selected === questions[currentQuestion].answer) {
-    alert("Correct pipe!");
+// MARIO MOVEMENT
+function moveLeft() {
+  if (playerPosition > 0) {
+    playerPosition--;
+    updatePlayer();
+  }
+}
+
+function moveRight() {
+  if (playerPosition < 2) {
+    playerPosition++;
+    updatePlayer();
+  }
+}
+
+function updatePlayer() {
+  let positions = [ -80, 0, 80 ];
+  document.getElementById("player").style.left = positions[playerPosition] + "px";
+}
+
+function checkMario(pipeIndex) {
+  if (pipeIndex === questions[currentQuestion].answer && pipeIndex === playerPosition) {
+    alert("Correct!");
     score++;
   } else {
-    alert("Wrong pipe!");
+    alert("Wrong!");
   }
-
   nextQuestion();
 }
 
-// Siguiente
+// ARCADE
+function checkArcade(selected) {
+  if (selected === questions[currentQuestion].answer) {
+    score++;
+  }
+  nextQuestion();
+}
+
 function nextQuestion() {
   currentQuestion++;
 
@@ -114,7 +138,6 @@ function nextQuestion() {
   }
 }
 
-// Timer
 function startTimer() {
   let timer = setInterval(() => {
     timeLeft--;
@@ -127,7 +150,6 @@ function startTimer() {
   }, 1000);
 }
 
-// Resultados
 function showResults() {
   let total = questions.length;
   let percentage = Math.round((score / total) * 100);
