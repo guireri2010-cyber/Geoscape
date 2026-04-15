@@ -2,7 +2,7 @@ let playerName = "";
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
-
+ 
 let playerPosition = 0;
 
 let questions = [
