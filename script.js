@@ -3,10 +3,9 @@ let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
 
-// QUESTIONS
 let questions = [
-  { type: "normal", question: "What is the capital of France?", options: ["Paris", "Madrid", "Berlin"], answer: 1 },
-  { type: "normal", question: "Which continent is Peru in?", options: ["Europe", "South America", "Asia"], answer: 1 },
+  { type: "normal", question: "What is the capital of France?", options: ["Paris", "Madrid", "Berlin"], answer: 0 },
+  { type: "normal", question: "Which continent is Brazil in?", options: ["Europe", "South America", "Asia"], answer: 1 },
   { type: "door", question: "Which country is Paris the capital of?", answer: 1 },
   { type: "normal", question: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
   { type: "normal", question: "What is the capital of Norway?", options: ["Seoul", "Oslo", "Helsinki"], answer: 2 },
@@ -17,10 +16,8 @@ let questions = [
   { type: "food", question: "🍽️ Final Level: What is a traditional Spanish food?", options: ["🥘 Paella", "🍔 Burger", "🍣 Sushi"], answer: 0 }
 ];
 
-// RANDOMIZE
 questions.sort(() => Math.random() - 0.5);
 
-// START
 function startGame() {
   let name = document.getElementById("name").value;
 
@@ -38,7 +35,6 @@ function startGame() {
   startTimer();
 }
 
-// SHOW QUESTION
 function showQuestion() {
   let q = questions[currentQuestion];
 
@@ -99,7 +95,6 @@ function showQuestion() {
   }
 }
 
-// DOOR GAME
 function chooseDoor(i) {
   if (i === questions[currentQuestion].answer) {
     score++;
@@ -110,7 +105,6 @@ function chooseDoor(i) {
   next();
 }
 
-// NEXT
 function next() {
   currentQuestion++;
 
@@ -121,7 +115,6 @@ function next() {
   }
 }
 
-// TIMER
 function startTimer() {
   let timer = setInterval(() => {
     timeLeft--;
@@ -134,23 +127,15 @@ function startTimer() {
   }, 1000);
 }
 
-// GOOGLE SHEETS
-function sendData(name, score, total) {
-  const percentage = ((score / total) * 100).toFixed(2);
-
-  fetch("PEGA_TU_URL_AQUI", {
-    method: "POST",
-    body: JSON.stringify({
-      name: name,
-      score: score,
-      total: total,
-      percentage: percentage
-    }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-}
+// PARTICLES
+particlesJS("particles-js", {
+  particles: {
+    number: { value: 60 },
+    size: { value: 3 },
+    move: { speed: 2 },
+    opacity: { value: 0.5 }
+  }
+});
 
 // RESULT
 function showResult() {
@@ -159,19 +144,13 @@ function showResult() {
 
   let msg = "";
 
-  if (percent >= 80) {
-    msg = "🌍 Excellent geography knowledge!";
-  } else if (percent >= 50) {
-    msg = "👍 Good job, but you can improve!";
-  } else {
-    msg = "📚 You need more practice!";
-  }
+  if (percent >= 80) msg = "🌍 Excellent geography knowledge!";
+  else if (percent >= 50) msg = "👍 Good job!";
+  else msg = "📚 Keep studying!";
 
   document.getElementById("quiz-screen").style.display = "none";
   document.getElementById("result-screen").style.display = "block";
 
   document.getElementById("result").innerText =
-    `${playerName} scored ${score}/${total} (${percent}%)\n${msg}\n\n✅ Result saved!`;
-
-  sendData(playerName, score, total);
+    `${playerName} scored ${score}/${total} (${percent}%)\n${msg}`;
 }
