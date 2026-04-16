@@ -4,8 +4,15 @@
   <title>GeoEscape</title>
   <link rel="stylesheet" href="style.css">
 </head>
- 
+
 <body>
+
+<div id="particles-js"></div>
+
+<!-- FLOATING EMOJIS -->
+<div class="floating">🌍</div>
+<div class="floating">✈️</div>
+<div class="floating">🧭</div>
 
 <div id="start-screen">
   <h1>🌍 GeoEscape</h1>
@@ -15,7 +22,6 @@
 </div>
 
 <div id="quiz-screen" style="display:none;">
-
   <p>⏱ Time: <span id="timer">180</span></p>
   <p id="progress"></p>
 
@@ -24,20 +30,22 @@
 
   <div id="door-game" style="display:none;">
     <p>🚪 Choose the correct country</p>
-
-    <button onclick="chooseDoor(0)">🇪🇸 Spain</button>
-    <button onclick="chooseDoor(1)">🇫🇷 France</button>
-    <button onclick="chooseDoor(2)">🇯🇵 Japan</button>
+    <div id="doors">
+      <button onclick="chooseDoor(0)">🚪 🇪🇸 Spain</button>
+      <button onclick="chooseDoor(1)">🚪 🇫🇷 France</button>
+      <button onclick="chooseDoor(2)">🚪 🇯🇵 Japan</button>
+    </div>
   </div>
 
   <div id="food-game" style="display:none;"></div>
-
 </div>
 
 <div id="result-screen" style="display:none;">
   <h2 id="result"></h2>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
