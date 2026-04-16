@@ -1,200 +1,182 @@
-let playerName="";
-let currentQuestion=0;
-let score=0;
-let timeLeft=180;
- 
-let questions=[
-  {type:"normal",question:"Capital of France?",options:["Paris","Madrid","Berlin"],answer:0},
-  {type:"normal",question:"Brazil is in?",options:["Europe","South America","Asia"],answer:1},
-  {type:"door",question:"Paris is in?",answer:1},
-  {type:"normal",question:"Largest ocean?",options:["Atlantic","Indian","Pacific"],answer:2},
-  {type:"normal",question:"Capital of Norway?",options:["Oslo","Stockholm","Copenhagen"],answer:0},
-  {type:"door",question:"Madrid is in?",answer:0},
-  {type:"normal",question:"Pyramids country?",options:["Egypt","India","Mexico"],answer:0},
-  {type:"normal",question:"Climate is?",options:["Weather","Long term","Rotation"],answer:1},
-  {type:"door",question:"Tokyo is in?",answer:2},
-  {type:"food",question:"Spanish food?",options:["Paella","Burger","Sushi"],answer:0}
+let playerName = "";
+let currentQuestion = 0;
+let score = 0;
+let timeLeft = 180;
+
+let questions = [
+  {
+    type: "normal",
+    question: "What is the capital of France?",
+    options: ["Paris", "Madrid", "Berlin"],
+    answer: 0
+  },
+  {
+    type: "normal",
+    question: "Which continent is Brazil in?",
+    options: ["Europe", "South America", "Asia"],
+    answer: 1
+  },
+  {
+    type: "door",
+    question: "Which country is Paris the capital of?",
+    answer: 1
+  },
+  {
+    type: "normal",
+    question: "What is the largest ocean?",
+    options: ["Atlantic", "Indian", "Pacific"],
+    answer: 2
+  },
+  {
+    type: "normal",
+    question: "What is the capital of Norway?",
+    options: ["Oslo", "Stockholm", "Copenhagen"],
+    answer: 0
+  },
+  {
+    type: "door",
+    question: "Which country is Madrid the capital of?",
+    answer: 0
+  },
+  {
+    type: "normal",
+    question: "Which country has the pyramids?",
+    options: ["Egypt", "India", "Mexico"],
+    answer: 0
+  },
+  {
+    type: "normal",
+    question: "What is climate?",
+    options: ["Daily weather", "Long-term patterns", "Earth rotation"],
+    answer: 1
+  },
+  {
+    type: "door",
+    question: "Which country is Tokyo the capital of?",
+    answer: 2
+  },
+  {
+    type: "food",
+    question: "🍽️ Final Level: What is a traditional Spanish food?",
+    options: ["Paella", "Burger", "Sushi"],
+    answer: 0
+  }
 ];
 
-questions.sort(()=>Math.random()-0.5);
+questions.sort(() => Math.random() - 0.5);
 
-function startGame(){
-  let name=document.getElementById("name").value;
-  if(!name) return alert("Enter name");
+// START
+function startGame() {
+  let name = document.getElementById("name").value;
 
-  playerName=name;
+  if (name === "") {
+    alert("Enter your name!");
+    return;
+  }
 
-  document.getElementById("start-screen").style.display="none";
-  document.getElementById("quiz-screen").style.display="block";
+  playerName = name;
+
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
 
   showQuestion();
   startTimer();
 }
 
-function showQuestion(){
-  let q=questions[currentQuestion];
+// SHOW QUESTION
+function showQuestion() {
+  let q = questions[currentQuestion];
 
-  document.getElementById("question").innerText=q.question;
-  document.getElementById("answers").innerHTML="";
-  document.getElementById("progress").innerText=
-    `Q ${currentQuestion+1}/${questions.length}`;
+  document.getElementById("question").innerText = q.question;
+  document.getElementById("answers").innerHTML = "";
 
-  document.getElementById("door-game").style.display="none";
-  document.getElementById("food-game").style.display="none";
+  document.getElementById("door-game").style.display = "none";
+  document.getElementById("food-game").style.display = "none";
 
-  if(q.type==="normal"){
-    q.options.forEach((opt,i)=>{
-      let b=document.createElement("button");
-      b.innerText=opt;
+  document.getElementById("progress").innerText =
+    `Question ${currentQuestion + 1} / ${questions.length}`;
 
-      b.onclick=()=>{
-        if(i===q.answer) score++;
+  if (q.type === "normal") {
+    q.options.forEach((opt, i) => {
+      let btn = document.createElement("button");
+      btn.innerText = opt;
+
+      btn.onclick = () => {
+        if (i === q.answer) score++;
         next();
       };
 
-      document.getElementById("answers").appendChild(b);
+      document.getElementById("answers").appendChild(btn);
     });
   }
 
-  if(q.type==="door"){
-    document.getElementById("door-game").style.display="block";
+  if (q.type === "door") {
+    document.getElementById("door-game").style.display = "block";
   }
 
-  if(q.type==="food"){
-    let g=document.getElementById("food-game");
-    g.innerHTML="";
+  if (q.type === "food") {
+    let game = document.getElementById("food-game");
+    game.innerHTML = q.question;
 
-    q.options.forEach((opt,i)=>{
-      let b=document.createElement("button");
-      b.innerText=opt;
+    q.options.forEach((opt, i) => {
+      let btn = document.createElement("button");
+      btn.innerText = opt;
 
-      b.onclick=()=>{
-        if(i===q.answer) score++;
+      btn.onclick = () => {
+        if (i === q.answer) score++;
         next();
       };
 
-      g.appendChild(b);
+      game.appendChild(btn);
     });
+
+    game.style.display = "block";
   }
 }
 
-function chooseDoor(i){
-  if(i===questions[currentQuestion].answer) score++;
+// DOOR GAME
+function chooseDoor(i) {
+  if (i === questions[currentQuestion].answer) score++;
   next();
 }
 
-function next(){
+// NEXT QUESTION
+function next() {
   currentQuestion++;
 
-  if(currentQuestion<questions.length){
+  if (currentQuestion < questions.length) {
     showQuestion();
   } else {
-    document.getElementById("quiz-screen").style.display="none";
-    document.getElementById("game-intro").style.display="block";
+    showResult();
   }
 }
 
-function startTimer(){
-  setInterval(()=>{
+// TIMER
+function startTimer() {
+  let timer = setInterval(() => {
     timeLeft--;
-    document.getElementById("timer").innerText=timeLeft;
-    if(timeLeft<=0) endGame(0);
-  },1000);
-}
+    document.getElementById("timer").innerText = timeLeft;
 
-/* 🦖 GAME */
-function startDinoGame(){
-  document.getElementById("game-intro").style.display="none";
-  document.getElementById("game-screen").style.display="block";
-
-  const dino=document.getElementById("dino");
-  const obstacle=document.getElementById("obstacle");
-  const scoreText=document.getElementById("game-score");
-
-  let jumping=false;
-  let obs=0;
-  let pos=300;
-
-  document.addEventListener("keydown",(e)=>{
-    if(e.code==="Space"&&!jumping){
-      jumping=true;
-      dino.style.bottom="80px";
-      setTimeout(()=>{dino.style.bottom="0px";jumping=false;},400);
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      showResult();
     }
-  });
-
-  function loop(){
-    pos-=6;
-
-    if(pos<-40){
-      obs++;
-      scoreText.innerText=`${obs}/10`;
-      pos=300;
-
-      if(obs===10){
-        endGame(obs);
-        return;
-      }
-    }
-
-    obstacle.style.right=pos+"px";
-
-    let dinoBottom=parseInt(getComputedStyle(dino).bottom);
-
-    if(pos<60&&pos>20&&dinoBottom<40){
-      endGame(obs);
-      return;
-    }
-
-    requestAnimationFrame(loop);
-  }
-
-  loop();
+  }, 1000);
 }
 
-/* 🏁 FINAL */
-function endGame(result){
-  document.getElementById("game-screen").style.display="none";
-  document.getElementById("level-screen").style.display="block";
+// RESULT
+function showResult() {
+  let total = questions.length;
+  let percent = Math.round((score / total) * 100);
 
-  let percent=result*10;
+  let msg = "";
+  if (percent >= 80) msg = "🌟 Excellent!";
+  else if (percent >= 50) msg = "👍 Good!";
+  else msg = "📚 Keep studying!";
 
-  document.getElementById("level-text").innerText=
-    `${playerName} → ${result}/10 (${percent}%)`;
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("result-screen").style.display = "block";
 
-  saveScore(result);
-  showLeaderboard();
+  document.getElementById("result").innerText =
+    `${playerName} scored ${score}/${total} (${percent}%)\n${msg}`;
 }
-
-/* 🏆 LEADERBOARD */
-function saveScore(result){
-  let board=JSON.parse(localStorage.getItem("board"))||[];
-
-  board.push({name:playerName,score:result});
-  board.sort((a,b)=>b.score-a.score);
-  board=board.slice(0,5);
-
-  localStorage.setItem("board",JSON.stringify(board));
-}
-
-function showLeaderboard(){
-  let board=JSON.parse(localStorage.getItem("board"))||[];
-  let html="";
-
-  board.forEach((p,i)=>{
-    html+=`${i+1}. ${p.name} - ${p.score}/10<br>`;
-  });
-
-  document.getElementById("leaderboard").innerHTML=html;
-}
-
-/* 🌍 PARTICLES FIX */
-window.onload=function(){
-  particlesJS("particles-js",{
-    particles:{
-      number:{value:50},
-      size:{value:3},
-      move:{speed:2}
-    }
-  });
-};
