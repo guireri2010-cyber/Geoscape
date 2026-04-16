@@ -4,71 +4,40 @@
   <title>GeoEscape</title>
   <link rel="stylesheet" href="style.css">
 </head>
- 
+
 <body>
 
-<div id="particles-js"></div>
-
-<div class="floating">🌍</div>
-<div class="floating">✈️</div>
-<div class="floating">🧭</div>
-
-<!-- START -->
 <div id="start-screen">
   <h1>🌍 GeoEscape</h1>
-  <input id="name" placeholder="Enter name">
+  <p>Enter your name</p>
+  <input type="text" id="name" placeholder="Your name">
   <button onclick="startGame()">Start</button>
 </div>
 
-<!-- QUIZ -->
 <div id="quiz-screen" style="display:none;">
-  <p>⏱ <span id="timer">180</span></p>
+
+  <p>⏱ Time: <span id="timer">180</span></p>
   <p id="progress"></p>
 
   <h2 id="question"></h2>
   <div id="answers"></div>
 
   <div id="door-game" style="display:none;">
+    <p>🚪 Choose the correct country</p>
+
     <button onclick="chooseDoor(0)">🇪🇸 Spain</button>
     <button onclick="chooseDoor(1)">🇫🇷 France</button>
     <button onclick="chooseDoor(2)">🇯🇵 Japan</button>
   </div>
 
-  <div id="food-game"></div>
+  <div id="food-game" style="display:none;"></div>
+
 </div>
 
-<!-- GAME INTRO -->
-<div id="game-intro" style="display:none;">
-  <h2>🦖 Bonus Level</h2>
-  <p>Dodge 10 volcanoes 🌋</p>
-  <button onclick="startDinoGame()">Start Game</button>
+<div id="result-screen" style="display:none;">
+  <h2 id="result"></h2>
 </div>
 
-<!-- GAME -->
-<div id="game-screen" style="display:none;">
-  <h2>🦖 Dino Runner</h2>
-
-  <div id="game">
-    <div id="dino">🦖</div>
-    <div id="obstacle">🌋</div>
-  </div>
-
-  <p id="game-score">0 / 10</p>
-</div>
-
-<!-- FINAL -->
-<div id="level-screen" style="display:none;">
-  <h1>🏁 LEVEL COMPLETE</h1>
-  <h2 id="level-text"></h2>
-
-  <h3>🏆 Leaderboard</h3>
-  <div id="leaderboard"></div>
-
-  <button onclick="location.reload()">Play Again</button>
-</div>
-
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
