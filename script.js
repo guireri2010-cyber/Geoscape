@@ -3,7 +3,7 @@ let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
 let bonus = 0;
-
+ 
 let questions = [
   { type: "normal", question: "What is the capital of France?", options: ["Paris", "Madrid", "Berlin"], answer: 0 },
   { type: "normal", question: "Which continent is Brazil in?", options: ["Europe", "South America", "Asia"], answer: 1 },
