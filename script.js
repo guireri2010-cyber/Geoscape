@@ -46,7 +46,12 @@ function showQuestion(){
     q.options.forEach((opt,i)=>{
       let b=document.createElement("button");
       b.innerText=opt;
-      b.onclick=()=>{if(i===q.answer)score++;next();};
+
+      b.onclick=()=>{
+        if(i===q.answer) score++;
+        next();
+      };
+
       document.getElementById("answers").appendChild(b);
     });
   }
@@ -57,24 +62,30 @@ function showQuestion(){
 
   if(q.type==="food"){
     let g=document.getElementById("food-game");
-    g.innerHTML=q.question;
+    g.innerHTML="";
 
     q.options.forEach((opt,i)=>{
       let b=document.createElement("button");
       b.innerText=opt;
-      b.onclick=()=>{if(i===q.answer)score++;next();};
+
+      b.onclick=()=>{
+        if(i===q.answer) score++;
+        next();
+      };
+
       g.appendChild(b);
     });
   }
 }
 
 function chooseDoor(i){
-  if(i===questions[currentQuestion].answer)score++;
+  if(i===questions[currentQuestion].answer) score++;
   next();
 }
 
 function next(){
   currentQuestion++;
+
   if(currentQuestion<questions.length){
     showQuestion();
   } else {
@@ -91,10 +102,7 @@ function startTimer(){
   },1000);
 }
 
----
-
-# 🦖 DINO GAME
-
+/* 🦖 GAME */
 function startDinoGame(){
   document.getElementById("game-intro").style.display="none";
   document.getElementById("game-screen").style.display="block";
@@ -144,10 +152,7 @@ function startDinoGame(){
   loop();
 }
 
----
-
-# 🏁 LEADERBOARD + FINAL SCREEN
-
+/* 🏁 FINAL */
 function endGame(result){
   document.getElementById("game-screen").style.display="none";
   document.getElementById("level-screen").style.display="block";
@@ -161,11 +166,11 @@ function endGame(result){
   showLeaderboard();
 }
 
+/* 🏆 LEADERBOARD */
 function saveScore(result){
   let board=JSON.parse(localStorage.getItem("board"))||[];
 
   board.push({name:playerName,score:result});
-
   board.sort((a,b)=>b.score-a.score);
   board=board.slice(0,5);
 
@@ -183,16 +188,13 @@ function showLeaderboard(){
   document.getElementById("leaderboard").innerHTML=html;
 }
 
-function resetGame(){
-  location.reload();
-}
-
----
-
-# 🎨 STYLE.CSS (añade SOLO esto si te falta)
-
-```css id="q8z1lp"
-#leaderboard{
-  margin-top:10px;
-  font-size:18px;
-}
+/* 🌍 PARTICLES FIX */
+window.onload=function(){
+  particlesJS("particles-js",{
+    particles:{
+      number:{value:50},
+      size:{value:3},
+      move:{speed:2}
+    }
+  });
+};
