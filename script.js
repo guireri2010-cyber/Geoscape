@@ -2,26 +2,29 @@ let playerName = "";
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
-let bonus = 0;
- 
+
+// GAME VARIABLES
+let obstaclesPassed = 0;
+let gameRunning = false;
+
 let questions = [
-  { type: "normal", question: "What is the capital of France?", options: ["Paris", "Madrid", "Berlin"], answer: 0 },
-  { type: "normal", question: "Which continent is Brazil in?", options: ["Europe", "South America", "Asia"], answer: 1 },
-  { type: "door", question: "Which country is Paris the capital of?", answer: 1 },
-  { type: "normal", question: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
-  { type: "normal", question: "What is the capital of Norway?", options: ["Oslo", "Stockholm", "Copenhagen"], answer: 0 },
-  { type: "door", question: "Which country is Madrid the capital of?", answer: 0 },
-  { type: "normal", question: "Which country has the pyramids?", options: ["Egypt", "India", "Mexico"], answer: 0 },
-  { type: "normal", question: "What is climate?", options: ["Daily weather", "Long-term patterns", "Earth rotation"], answer: 1 },
-  { type: "door", question: "Which country is Tokyo the capital of?", answer: 2 },
-  { type: "food", question: "🍽️ Final Level: What is a traditional Spanish food?", options: ["🥘 Paella", "🍔 Burger", "🍣 Sushi"], answer: 0 }
+  { type: "normal", question: "Capital of France?", options: ["Paris","Madrid","Berlin"], answer: 0 },
+  { type: "normal", question: "Brazil is in?", options: ["Europe","South America","Asia"], answer: 1 },
+  { type: "door", question: "Paris is in?", answer: 1 },
+  { type: "normal", question: "Largest ocean?", options: ["Atlantic","Indian","Pacific"], answer: 2 },
+  { type: "normal", question: "Capital of Norway?", options: ["Oslo","Stockholm","Copenhagen"], answer: 0 },
+  { type: "door", question: "Madrid is in?", answer: 0 },
+  { type: "normal", question: "Pyramids country?", options: ["Egypt","India","Mexico"], answer: 0 },
+  { type: "normal", question: "Climate is?", options: ["Weather","Long term","Rotation"], answer: 1 },
+  { type: "door", question: "Tokyo is in?", answer: 2 },
+  { type: "food", question: "Spanish food?", options: ["Paella","Burger","Sushi"], answer: 0 }
 ];
 
 questions.sort(() => Math.random() - 0.5);
 
 function startGame() {
   let name = document.getElementById("name").value;
-  if (name === "") return alert("Enter your name!");
+  if (!name) return alert("Enter name");
 
   playerName = name;
 
@@ -37,26 +40,20 @@ function showQuestion() {
 
   document.getElementById("question").innerText = q.question;
   document.getElementById("answers").innerHTML = "";
+  document.getElementById("progress").innerText =
+    `Q ${currentQuestion+1}/${questions.length}`;
 
   document.getElementById("door-game").style.display = "none";
   document.getElementById("food-game").style.display = "none";
 
-  document.getElementById("progress").innerText =
-    `Question ${currentQuestion + 1} / ${questions.length}`;
-
   if (q.type === "normal") {
-    q.options.forEach((opt, i) => {
-      let btn = document.createElement("button");
-      btn.innerText = opt;
+    q.options.forEach((opt,i)=>{
+      let btn=document.createElement("button");
+      btn.innerText=opt;
 
-      btn.onclick = () => {
-        if (i === q.answer) {
-          btn.style.background = "green";
-          score++;
-        } else {
-          btn.style.background = "red";
-        }
-        setTimeout(next, 400);
+      btn.onclick=()=>{
+        if(i===q.answer) score++;
+        setTimeout(next,300);
       };
 
       document.getElementById("answers").appendChild(btn);
@@ -68,110 +65,132 @@ function showQuestion() {
   }
 
   if (q.type === "food") {
-    let game = document.getElementById("food-game");
-    game.innerHTML = `<h3>${q.question}</h3>`;
+    let g=document.getElementById("food-game");
+    g.innerHTML=q.question;
 
-    q.options.forEach((opt, i) => {
-      let btn = document.createElement("button");
-      btn.innerText = opt;
+    q.options.forEach((opt,i)=>{
+      let b=document.createElement("button");
+      b.innerText=opt;
 
-      btn.onclick = () => {
-        if (i === q.answer) {
-          btn.style.background = "green";
-          score++;
-        } else {
-          btn.style.background = "red";
-        }
-        setTimeout(next, 400);
+      b.onclick=()=>{
+        if(i===q.answer) score++;
+        setTimeout(next,300);
       };
 
-      game.appendChild(btn);
+      g.appendChild(b);
     });
-
-    game.style.display = "block";
   }
 }
 
-function chooseDoor(i) {
-  if (i === questions[currentQuestion].answer) score++;
+function chooseDoor(i){
+  if(i===questions[currentQuestion].answer) score++;
   next();
 }
 
-function next() {
+function next(){
   currentQuestion++;
 
-  if (currentQuestion < questions.length) {
+  if(currentQuestion<questions.length){
     showQuestion();
   } else {
-    startMiniGame();
+    document.getElementById("quiz-screen").style.display="none";
+    document.getElementById("game-intro").style.display="block";
   }
 }
 
-function startTimer() {
-  let timer = setInterval(() => {
+function startTimer(){
+  setInterval(()=>{
     timeLeft--;
-    document.getElementById("timer").innerText = timeLeft;
+    document.getElementById("timer").innerText=timeLeft;
 
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      showResult();
+    if(timeLeft<=0){
+      endQuiz();
     }
-  }, 1000);
+  },1000);
 }
 
-// MINI GAME
-function startMiniGame() {
-  document.getElementById("quiz-screen").style.display = "none";
-  document.getElementById("game-screen").style.display = "block";
+// INTRO → GAME
+function startGameLevel(){
+  document.getElementById("game-intro").style.display="none";
+  document.getElementById("game-screen").style.display="block";
 
-  let dino = document.getElementById("dino");
-  let obstacle = document.getElementById("obstacle");
+  startDinoGame();
+}
 
-  document.addEventListener("keydown", function(e) {
-    if (e.code === "Space" && !dino.classList.contains("jump")) {
-      dino.classList.add("jump");
-      setTimeout(() => dino.classList.remove("jump"), 500);
+// 🦖 GAME LOGIC
+function startDinoGame(){
+  let dino=document.getElementById("dino");
+  let obstacle=document.getElementById("obstacle");
+  let scoreText=document.getElementById("game-score");
+
+  let jump=false;
+  let obstacleCount=0;
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.code==="Space" && !jump){
+      jump=true;
+      dino.style.bottom="80px";
+
+      setTimeout(()=>{
+        dino.style.bottom="0px";
+        jump=false;
+      },400);
     }
   });
 
-  let gameLoop = setInterval(() => {
-    let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
-    let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("left"));
-
-    if (obstacleLeft < 80 && obstacleLeft > 20 && dinoTop > 130) {
-      clearInterval(gameLoop);
-      showResult();
+  function spawnObstacle(){
+    if(obstacleCount>=10){
+      endGame(10);
+      return;
     }
-  }, 10);
 
-  setTimeout(() => {
-    bonus = 1;
-    clearInterval(gameLoop);
-    showResult();
-  }, 5000);
+    obstacleCount++;
+    scoreText.innerText=`${obstacleCount}/10`;
+
+    obstacle.style.right="-20px";
+
+    let move=setInterval(()=>{
+      let pos=parseInt(obstacle.style.right||-20);
+      obstacle.style.right=(pos+5)+"px";
+
+      let dinoBottom=parseInt(window.getComputedStyle(dino).bottom);
+
+      if(pos>250 && pos<300 && dinoBottom<40){
+        clearInterval(move);
+        endGame(obstacleCount-1);
+      }
+
+      if(pos>400){
+        clearInterval(move);
+        spawnObstacle();
+      }
+    },30);
+  }
+
+  spawnObstacle();
+}
+
+function endGame(result){
+  obstaclesPassed=result;
+
+  document.getElementById("game-screen").style.display="none";
+  document.getElementById("result-screen").style.display="block";
+
+  let percent=result*10;
+
+  document.getElementById("result").innerText=
+    `${playerName}
+Quiz Score: ${score}/${questions.length}
+Dino Game: ${result}/10 (${percent}%)
+
+FINAL SCORE: ${Math.round((score/questions.length*50)+(percent/2))}%`;
 }
 
 // PARTICLES
 particlesJS("particles-js", {
-  particles: {
-    number: { value: 60 },
-    size: { value: 3 },
-    move: { speed: 2 }
+  particles:{
+    number:{value:50},
+    size:{value:3},
+    move:{speed:2}
   }
 });
-
-function showResult() {
-  let total = questions.length + 1;
-  let finalScore = score + bonus;
-  let percent = Math.round((finalScore / total) * 100);
-
-  let msg = percent >= 80 ? "🌍 Excellent!" :
-            percent >= 50 ? "👍 Good job!" :
-            "📚 Keep studying!";
-
-  document.getElementById("game-screen").style.display = "none";
-  document.getElementById("result-screen").style.display = "block";
-
-  document.getElementById("result").innerText =
-    `${playerName} scored ${finalScore}/${total} (${percent}%)\n${msg}`;
-}
