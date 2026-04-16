@@ -4,7 +4,7 @@
   <title>GeoEscape</title>
   <link rel="stylesheet" href="style.css">
 </head>
- 
+
 <body>
 
 <div id="particles-js"></div>
@@ -41,7 +41,7 @@
 <div id="game-intro" style="display:none;">
   <h2>🦖 Bonus Level</h2>
   <p>Dodge 10 volcanoes 🌋</p>
-  <button onclick="startGame()">Start Game</button>
+  <button onclick="startDinoGame()">Start Game</button>
 </div>
 
 <!-- GAME -->
@@ -56,9 +56,15 @@
   <p id="game-score">0 / 10</p>
 </div>
 
-<!-- RESULT -->
-<div id="result-screen" style="display:none;">
-  <h2 id="result"></h2>
+<!-- LEVEL COMPLETE -->
+<div id="level-screen" style="display:none;">
+  <h1>🏁 LEVEL COMPLETE</h1>
+  <h2 id="level-text"></h2>
+
+  <h3>🏆 Leaderboard</h3>
+  <div id="leaderboard"></div>
+
+  <button onclick="resetGame()">Play Again</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
