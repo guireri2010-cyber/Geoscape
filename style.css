@@ -1,136 +1,63 @@
 body{
-  font-family: Arial, sans-serif;
-  margin: 0;
-  text-align: center;
-  overflow: hidden;
-
-  /* 🌊 animated background */
-  background: linear-gradient(-45deg, #74ebd5, #ACB6E5, #e6f7ff, #c2f0ff);
-  background-size: 400% 400%;
-  animation: bgMove 10s ease infinite;
+  font-family:Arial;
+  margin:0;
+  text-align:center;
+  overflow:hidden;
+  background:linear-gradient(-45deg,#74ebd5,#ACB6E5,#e6f7ff,#c2f0ff);
+  background-size:400% 400%;
+  animation:bg 10s infinite;
 }
 
-@keyframes bgMove{
+@keyframes bg{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
 
-/* 🌍 PARTICLES BACKGROUND */
 #particles-js{
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-2;
 }
 
-/* ✈️ FLOATING EMOJIS */
 .floating{
-  position: fixed;
-  font-size: 28px;
-  opacity: 0.8;
-  animation: floatUp 12s linear infinite;
+  position:fixed;
+  font-size:28px;
+  animation:float 12s linear infinite;
 }
 
-.floating:nth-child(1){ left: 10%; }
-.floating:nth-child(2){ left: 50%; }
-.floating:nth-child(3){ left: 80%; }
-
-@keyframes floatUp{
-  0%{ top: 100%; transform: rotate(0deg); opacity: 0; }
-  50%{ opacity: 1; }
-  100%{ top: -10%; transform: rotate(360deg); opacity: 0; }
-}
-
-/* 🧠 GENERAL UI */
-h1,h2,h3{
-  margin-top: 20px;
-}
-
-input{
-  padding: 10px;
-  font-size: 16px;
-  margin: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+@keyframes float{
+  0%{top:100%}
+  100%{top:-10%}
 }
 
 button{
-  padding: 10px 15px;
-  margin: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  background: #ffffff;
-  transition: 0.2s;
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-button:hover{
-  transform: scale(1.05);
-  background: #f0f0f0;
-}
-
-/* 📊 PROGRESS TEXT */
-#progress{
-  font-weight: bold;
-}
-
-/* 🚪 DOOR GAME */
-#door-game button{
-  display: block;
-  width: 200px;
-  margin: 10px auto;
-}
-
-/* 🦖 GAME AREA */
 #game{
-  position: relative;
-  width: 320px;
-  height: 150px;
-  margin: 20px auto;
-  border: 2px solid #333;
-  background: white;
-  overflow: hidden;
-  border-radius: 10px;
+  width:320px;
+  height:150px;
+  margin:auto;
+  border:2px solid black;
+  background:white;
+  position:relative;
+  overflow:hidden;
 }
 
-/* DINOSAUR */
 #dino{
-  position: absolute;
-  bottom: 0;
-  left: 20px;
-  font-size: 30px;
+  position:absolute;
+  bottom:0;
+  left:20px;
 }
 
-/* OBSTACLE */
 #obstacle{
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-size: 30px;
-}
-
-/* 🏁 FINAL SCREEN */
-#level-screen{
-  display: none;
-  margin-top: 80px;
-}
-
-#leaderboard{
-  margin-top: 15px;
-  font-size: 18px;
-  background: rgba(255,255,255,0.6);
-  display: inline-block;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-/* 🧊 SCREEN TRANSITIONS (smooth feel) */
-#start-screen,
-#quiz-screen,
-#game-screen,
-#game-intro,
-#level-screen{
-  transition: 0.3s ease;
+  position:absolute;
+  bottom:0;
+  right:0;
 }
