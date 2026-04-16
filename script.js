@@ -2,7 +2,7 @@ let playerName="";
 let currentQuestion=0;
 let score=0;
 let timeLeft=180;
-
+ 
 let questions=[
   {type:"normal",question:"Capital of France?",options:["Paris","Madrid","Berlin"],answer:0},
   {type:"normal",question:"Brazil is in?",options:["Europe","South America","Asia"],answer:1},
