@@ -6,7 +6,7 @@ let timeLeft = 180;
 // GAME VARIABLES
 let obstaclesPassed = 0;
 let gameRunning = false;
-
+ 
 let questions = [
   { type: "normal", question: "Capital of France?", options: ["Paris","Madrid","Berlin"], answer: 0 },
   { type: "normal", question: "Brazil is in?", options: ["Europe","South America","Asia"], answer: 1 },
