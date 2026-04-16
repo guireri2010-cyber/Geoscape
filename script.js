@@ -3,68 +3,66 @@ let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
 
-// GAME VARIABLES
-let obstaclesPassed = 0;
-let gameRunning = false;
- 
 let questions = [
-  { type: "normal", question: "Capital of France?", options: ["Paris","Madrid","Berlin"], answer: 0 },
-  { type: "normal", question: "Brazil is in?", options: ["Europe","South America","Asia"], answer: 1 },
-  { type: "door", question: "Paris is in?", answer: 1 },
-  { type: "normal", question: "Largest ocean?", options: ["Atlantic","Indian","Pacific"], answer: 2 },
-  { type: "normal", question: "Capital of Norway?", options: ["Oslo","Stockholm","Copenhagen"], answer: 0 },
-  { type: "door", question: "Madrid is in?", answer: 0 },
-  { type: "normal", question: "Pyramids country?", options: ["Egypt","India","Mexico"], answer: 0 },
-  { type: "normal", question: "Climate is?", options: ["Weather","Long term","Rotation"], answer: 1 },
-  { type: "door", question: "Tokyo is in?", answer: 2 },
-  { type: "food", question: "Spanish food?", options: ["Paella","Burger","Sushi"], answer: 0 }
+  { type:"normal", question:"Capital of France?", options:["Paris","Madrid","Berlin"], answer:0 },
+  { type:"normal", question:"Brazil is in?", options:["Europe","South America","Asia"], answer:1 },
+  { type:"door", question:"Paris is in?", answer:1 },
+  { type:"normal", question:"Largest ocean?", options:["Atlantic","Indian","Pacific"], answer:2 },
+  { type:"normal", question:"Capital of Norway?", options:["Oslo","Stockholm","Copenhagen"], answer:0 },
+  { type:"door", question:"Madrid is in?", answer:0 },
+  { type:"normal", question:"Pyramids country?", options:["Egypt","India","Mexico"], answer:0 },
+  { type:"normal", question:"Climate is?", options:["Weather","Long term","Rotation"], answer:1 },
+  { type:"door", question:"Tokyo is in?", answer:2 },
+  { type:"food", question:"Spanish food?", options:["Paella","Burger","Sushi"], answer:0 }
 ];
 
-questions.sort(() => Math.random() - 0.5);
+questions.sort(()=>Math.random()-0.5);
 
-function startGame() {
-  let name = document.getElementById("name").value;
-  if (!name) return alert("Enter name");
+function startGame(){
+  if(!playerName){
+    let name=document.getElementById("name").value;
+    if(!name) return alert("Enter name");
+    playerName=name;
+  }
 
-  playerName = name;
-
-  document.getElementById("start-screen").style.display = "none";
-  document.getElementById("quiz-screen").style.display = "block";
+  document.getElementById("start-screen").style.display="none";
+  document.getElementById("game-intro").style.display="none";
+  document.getElementById("quiz-screen").style.display="block";
 
   showQuestion();
   startTimer();
 }
 
-function showQuestion() {
-  let q = questions[currentQuestion];
+function showQuestion(){
+  let q=questions[currentQuestion];
 
-  document.getElementById("question").innerText = q.question;
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("progress").innerText =
+  document.getElementById("question").innerText=q.question;
+  document.getElementById("answers").innerHTML="";
+  document.getElementById("progress").innerText=
     `Q ${currentQuestion+1}/${questions.length}`;
 
-  document.getElementById("door-game").style.display = "none";
-  document.getElementById("food-game").style.display = "none";
+  document.getElementById("door-game").style.display="none";
+  document.getElementById("food-game").style.display="none";
 
-  if (q.type === "normal") {
+  if(q.type==="normal"){
     q.options.forEach((opt,i)=>{
-      let btn=document.createElement("button");
-      btn.innerText=opt;
+      let b=document.createElement("button");
+      b.innerText=opt;
 
-      btn.onclick=()=>{
+      b.onclick=()=>{
         if(i===q.answer) score++;
-        setTimeout(next,300);
+        next();
       };
 
-      document.getElementById("answers").appendChild(btn);
+      document.getElementById("answers").appendChild(b);
     });
   }
 
-  if (q.type === "door") {
-    document.getElementById("door-game").style.display = "block";
+  if(q.type==="door"){
+    document.getElementById("door-game").style.display="block";
   }
 
-  if (q.type === "food") {
+  if(q.type==="food"){
     let g=document.getElementById("food-game");
     g.innerHTML=q.question;
 
@@ -74,7 +72,7 @@ function showQuestion() {
 
       b.onclick=()=>{
         if(i===q.answer) score++;
-        setTimeout(next,300);
+        next();
       };
 
       g.appendChild(b);
@@ -94,7 +92,7 @@ function next(){
     showQuestion();
   } else {
     document.getElementById("quiz-screen").style.display="none";
-    document.getElementById("game-intro").style.display="block";
+    startDinoGame();
   }
 }
 
@@ -102,77 +100,72 @@ function startTimer(){
   setInterval(()=>{
     timeLeft--;
     document.getElementById("timer").innerText=timeLeft;
-
-    if(timeLeft<=0){
-      endQuiz();
-    }
+    if(timeLeft<=0) endGame(0);
   },1000);
 }
 
-// INTRO → GAME
-function startGameLevel(){
-  document.getElementById("game-intro").style.display="none";
+---
+
+# 🦖 DINO GAME (ESTABLE + 10 OBSTÁCULOS)
+
+function startDinoGame(){
   document.getElementById("game-screen").style.display="block";
 
-  startDinoGame();
-}
+  const dino=document.getElementById("dino");
+  const obstacle=document.getElementById("obstacle");
+  const scoreText=document.getElementById("game-score");
 
-// 🦖 GAME LOGIC
-function startDinoGame(){
-  let dino=document.getElementById("dino");
-  let obstacle=document.getElementById("obstacle");
-  let scoreText=document.getElementById("game-score");
-
-  let jump=false;
-  let obstacleCount=0;
+  let jumping=false;
+  let obsCount=0;
+  let posX=300;
+  let gameOver=false;
 
   document.addEventListener("keydown",(e)=>{
-    if(e.code==="Space" && !jump){
-      jump=true;
+    if(e.code==="Space" && !jumping){
+      jumping=true;
       dino.style.bottom="80px";
 
       setTimeout(()=>{
         dino.style.bottom="0px";
-        jump=false;
+        jumping=false;
       },400);
     }
   });
 
-  function spawnObstacle(){
-    if(obstacleCount>=10){
-      endGame(10);
+  function loop(){
+    if(gameOver) return;
+
+    posX-=6; // velocidad tipo Chrome
+
+    if(posX<-40){
+      obsCount++;
+      scoreText.innerText=`${obsCount}/10`;
+
+      if(obsCount===10){
+        endGame(10);
+        return;
+      }
+
+      posX=300;
+    }
+
+    obstacle.style.right=posX+"px";
+
+    let dinoBottom=parseInt(getComputedStyle(dino).bottom);
+
+    if(posX<60 && posX>20 && dinoBottom<40){
+      gameOver=true;
+      endGame(obsCount);
       return;
     }
 
-    obstacleCount++;
-    scoreText.innerText=`${obstacleCount}/10`;
-
-    obstacle.style.right="-20px";
-
-    let move=setInterval(()=>{
-      let pos=parseInt(obstacle.style.right||-20);
-      obstacle.style.right=(pos+5)+"px";
-
-      let dinoBottom=parseInt(window.getComputedStyle(dino).bottom);
-
-      if(pos>250 && pos<300 && dinoBottom<40){
-        clearInterval(move);
-        endGame(obstacleCount-1);
-      }
-
-      if(pos>400){
-        clearInterval(move);
-        spawnObstacle();
-      }
-    },30);
+    requestAnimationFrame(loop);
   }
 
-  spawnObstacle();
+  loop();
 }
 
 function endGame(result){
-  obstaclesPassed=result;
-
   document.getElementById("game-screen").style.display="none";
   document.getElementById("result-screen").style.display="block";
 
@@ -180,17 +173,9 @@ function endGame(result){
 
   document.getElementById("result").innerText=
     `${playerName}
-Quiz Score: ${score}/${questions.length}
-Dino Game: ${result}/10 (${percent}%)
 
-FINAL SCORE: ${Math.round((score/questions.length*50)+(percent/2))}%`;
+Quiz: ${score}/${questions.length}
+Dino: ${result}/10 (${percent}%)
+
+Final Score: ${Math.round((score/questions.length*50)+(percent/2))}%`;
 }
-
-// PARTICLES
-particlesJS("particles-js", {
-  particles:{
-    number:{value:50},
-    size:{value:3},
-    move:{speed:2}
-  }
-});
