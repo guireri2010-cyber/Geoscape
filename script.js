@@ -8,7 +8,7 @@ let questions = [
   { type: "normal", question: "Which continent is Brazil in?", options: ["Europe", "South America", "Asia"], answer: 1 },
   { type: "door", question: "Which country is Paris the capital of?", answer: 1 },
   { type: "normal", question: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
-  { type: "normal", question: "What is the capital of Norway?", options: ["Seoul", "Oslo", "Helsinki"], answer: 2 },
+  { type: "normal", question: "What is the capital of Norway?", options: ["Oslo", "Stockholm", "Helsinki"], answer: 0 },
   { type: "door", question: "Which country is Madrid the capital of?", answer: 0 },
   { type: "normal", question: "Which country has the pyramids?", options: ["Egypt", "India", "Mexico"], answer: 0 },
   { type: "normal", question: "What is climate?", options: ["Daily weather", "Long-term patterns", "Earth rotation"], answer: 1 },
