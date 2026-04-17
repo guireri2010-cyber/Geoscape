@@ -2,6 +2,7 @@ let playerName = "";
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 180;
+let submitted = false; // 🆕 evitar duplicados
 
 let questions = [
   { type: "normal", question: "What is the capital of France?", options: ["Paris", "Madrid", "Berlin"], answer: 0 },
@@ -47,11 +48,9 @@ function showQuestion() {
   document.getElementById("progress").innerText =
     `Question ${currentQuestion + 1} / ${questions.length}`;
 
-  // 🆕 PROGRESS BAR UPDATE
   let progressPercent = (currentQuestion / questions.length) * 100;
   document.getElementById("progress-fill").style.width = progressPercent + "%";
 
-  // 🆕 LEVEL SYSTEM
   if (q.type === "normal") {
     document.getElementById("level").innerText = "Level 1: Quiz";
   }
@@ -166,7 +165,6 @@ function showResult() {
   document.getElementById("quiz-screen").style.display = "none";
   document.getElementById("result-screen").style.display = "block";
 
-  // 🆕 ANIMATION
   document.getElementById("result-screen").style.opacity = 0;
   setTimeout(() => {
     document.getElementById("result-screen").style.opacity = 1;
@@ -175,15 +173,20 @@ function showResult() {
   document.getElementById("result").innerText =
     `${playerName} scored ${score}/${total} (${percent}%)\n${msg}`;
 
-  fetch("https://script.google.com/macros/s/AKfycbz7tCLmrLnwo7b2otlFUla0AKwmyGA3ibRqnETxo0trfdJIUqIm4aFzUpJKMgS5TehoWw/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      name: playerName,
-      score: score,
-      total: total,
-      percentage: percent
+  // 🆕 EVITAR DUPLICADOS
+  if (!submitted) {
+    submitted = true;
+
+    fetch("https://script.google.com/macros/s/AKfycbz7tCLmrLnwo7b2otlFUla0AKwmyGA3ibRqnETxo0trfdJIUqIm4aFzUpJKMgS5TehoWw/exec", {
+      method: "POST",
+      body: JSON.stringify({
+        name: playerName,
+        score: score,
+        total: total,
+        percentage: percent
+      })
     })
-  })
-  .then(() => alert("Score saved!"))
-  .catch(err => console.error("Error:", err));
+    .then(() => alert("Score saved!"))
+    .catch(err => console.error("Error:", err));
+  }
 }
