@@ -47,6 +47,21 @@ function showQuestion() {
   document.getElementById("progress").innerText =
     `Question ${currentQuestion + 1} / ${questions.length}`;
 
+  // 🆕 PROGRESS BAR UPDATE
+  let progressPercent = (currentQuestion / questions.length) * 100;
+  document.getElementById("progress-fill").style.width = progressPercent + "%";
+
+  // 🆕 LEVEL SYSTEM
+  if (q.type === "normal") {
+    document.getElementById("level").innerText = "Level 1: Quiz";
+  }
+  if (q.type === "door") {
+    document.getElementById("level").innerText = "Level 2: Door Challenge";
+  }
+  if (q.type === "food") {
+    document.getElementById("level").innerText = "Final Level";
+  }
+
   if (q.type === "normal") {
     q.options.forEach((opt, i) => {
       let btn = document.createElement("button");
@@ -144,17 +159,22 @@ function showResult() {
 
   let msg = "";
 
-  if (percent >= 80) msg = "🌍 Excellent geography knowledge!";
-  else if (percent >= 50) msg = "👍 Good job!";
-  else msg = "📚 Keep studying!";
+  if (percent >= 80) msg = "🌍 Excellent geography knowledge! You could teach this!";
+  else if (percent >= 50) msg = "👍 Good job! You understand the basics.";
+  else msg = "📚 Keep studying! Review and try again.";
 
   document.getElementById("quiz-screen").style.display = "none";
   document.getElementById("result-screen").style.display = "block";
 
+  // 🆕 ANIMATION
+  document.getElementById("result-screen").style.opacity = 0;
+  setTimeout(() => {
+    document.getElementById("result-screen").style.opacity = 1;
+  }, 100);
+
   document.getElementById("result").innerText =
     `${playerName} scored ${score}/${total} (${percent}%)\n${msg}`;
 
-  // 🔥 ENVIAR A GOOGLE SHEETS
   fetch("https://script.google.com/macros/s/AKfycbz7tCLmrLnwo7b2otlFUla0AKwmyGA3ibRqnETxo0trfdJIUqIm4aFzUpJKMgS5TehoWw/exec", {
     method: "POST",
     body: JSON.stringify({
@@ -164,6 +184,6 @@ function showResult() {
       percentage: percent
     })
   })
-  .then(res => console.log("Data sent"))
+  .then(() => alert("Score saved!"))
   .catch(err => console.error("Error:", err));
 }
