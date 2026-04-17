@@ -5,7 +5,7 @@ let timeLeft = 180;
 let submitted = false; // 🆕 evitar duplicados
 
 let questions = [
-  { type: "normal", question: "What is the capital of France?", options: ["Paris", "Madrid", "Berlin"], answer: 0 },
+  { type: "normal", question: "What is the capital of Turkey?", options: ["Ankara", "Estambul", "Berlin"], answer: 0 },
   { type: "normal", question: "Which continent is Brazil in?", options: ["Europe", "South America", "Asia"], answer: 1 },
   { type: "door", question: "Which country is Paris the capital of?", answer: 1 },
   { type: "normal", question: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
