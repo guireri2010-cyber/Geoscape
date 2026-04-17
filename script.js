@@ -153,4 +153,17 @@ function showResult() {
 
   document.getElementById("result").innerText =
     `${playerName} scored ${score}/${total} (${percent}%)\n${msg}`;
+
+  // 🔥 ENVIAR A GOOGLE SHEETS
+  fetch("https://script.google.com/macros/s/AKfycbz7tCLmrLnwo7b2otlFUla0AKwmyGA3ibRqnETxo0trfdJIUqIm4aFzUpJKMgS5TehoWw/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      name: playerName,
+      score: score,
+      total: total,
+      percentage: percent
+    })
+  })
+  .then(res => console.log("Data sent"))
+  .catch(err => console.error("Error:", err));
 }
